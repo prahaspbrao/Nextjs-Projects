@@ -39,82 +39,22 @@ export default function AppLayout({
   };
 
   return (
-    <div className="drawer lg:drawer-open">
-      <input
-        id="sidebar-drawer"
-        type="checkbox"
-        className="drawer-toggle"
-        checked={sidebarOpen}
-        onChange={() => setSidebarOpen(!sidebarOpen)}
-      />
-      <div className="drawer-content flex flex-col">
-        {/* Navbar */}
-        <header className="w-full bg-base-200">
-          <div className="navbar max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex-none lg:hidden">
-              <label
-                htmlFor="sidebar-drawer"
-                className="btn btn-square btn-ghost drawer-button"
-              >
-                <MenuIcon />
-              </label>
-            </div>
-            <div className="flex-1">
-              <Link href="/" onClick={handleLogoClick}>
-                <div className="btn btn-ghost normal-case text-2xl font-bold tracking-tight cursor-pointer">
-                  Cloudinary Showcase
-                </div>
-              </Link>
-            </div>
-            <div className="flex-none flex items-center space-x-4">
-              {user && (
-                <>
-                  <div className="avatar">
-                    <div className="w-8 h-8 rounded-full">
-                      <img
-                        src={user.imageUrl}
-                        alt={
-                          user.username || user.emailAddresses[0].emailAddress
-                        }
-                      />
-                    </div>
-                  </div>
-                  <span className="text-sm truncate max-w-xs lg:max-w-md">
-                    {user.username || user.emailAddresses[0].emailAddress}
-                  </span>
-                  <button
-                    onClick={handleSignOut}
-                    className="btn btn-ghost btn-circle"
-                  >
-                    <LogOutIcon className="h-6 w-6" />
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
-        {/* Page content */}
-        <main className="flex-grow">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 my-8">
-            {children}
-          </div>
-        </main>
-      </div>
-      <div className="drawer-side">
-        <label htmlFor="sidebar-drawer" className="drawer-overlay"></label>
-        <aside className="bg-base-200 w-64 h-full flex flex-col">
+    <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+      {/* Sidebar */}
+      <aside className={`bg-gray-900 text-gray-100 min-h-screen transition-all duration-300 ease-in-out ${sidebarOpen ? "w-64" : "w-0 overflow-hidden"}`}>
+        <div className="flex flex-col h-full">
           <div className="flex items-center justify-center py-4">
-            <ImageIcon className="w-10 h-10 text-primary" />
+            <ImageIcon className="w-10 h-10 text-blue-400" />
           </div>
-          <ul className="menu p-4 w-full text-base-content flex-grow">
+          <ul className="menu p-4 flex-grow">
             {sidebarItems.map((item) => (
               <li key={item.href} className="mb-2">
                 <Link
                   href={item.href}
-                  className={`flex items-center space-x-4 px-4 py-2 rounded-lg ${
+                  className={`flex items-center space-x-4 px-4 py-2 rounded-lg transition-all duration-200 ${
                     pathname === item.href
-                      ? "bg-primary text-white"
-                      : "hover:bg-base-300"
+                      ? "bg-blue-600 text-white"
+                      : "hover:bg-gray-800 text-gray-200"
                   }`}
                   onClick={() => setSidebarOpen(false)}
                 >
@@ -135,7 +75,61 @@ export default function AppLayout({
               </button>
             </div>
           )}
-        </aside>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex flex-col flex-grow transition-all duration-300">
+        {/* Navbar */}
+        <header className="w-full bg-gray-900 border-b border-gray-700">
+          <div className="navbar max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex-none">
+              <button
+                className="btn btn-square btn-ghost"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+              >
+                <MenuIcon />
+              </button>
+            </div>
+            <div className="flex-1">
+              <Link href="/" onClick={handleLogoClick}>
+                <div className="btn btn-ghost text-2xl font-bold tracking-tight text-white">
+                  Cloudinary Showcase
+                </div>
+              </Link>
+            </div>
+            {user && (
+              <div className="flex-none flex items-center space-x-4">
+                <div className="avatar">
+                  <div className="w-8 h-8 rounded-full">
+                    <img
+                      src={user.imageUrl}
+                      alt={
+                        user.username || user.emailAddresses[0].emailAddress
+                      }
+                    />
+                  </div>
+                </div>
+                <span className="text-sm truncate max-w-xs lg:max-w-md text-gray-300">
+                  {user.username || user.emailAddresses[0].emailAddress}
+                </span>
+                <button
+                  onClick={handleSignOut}
+                  className="btn btn-ghost btn-circle text-gray-300"
+                >
+                  <LogOutIcon className="h-6 w-6" />
+                </button>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-grow pb-20">
+          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 my-8">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   );
